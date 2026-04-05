@@ -1,0 +1,54 @@
+---
+interface FinalCTAProps {
+  headline: string;
+  subheadline?: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
+  trustStat: { value: string; label: string };
+}
+
+const { headline, subheadline, primaryCta, secondaryCta, trustStat } = Astro.props;
+---
+
+<section id="contact" class="py-20 lg:py-32 bg-gradient-to-b from-white to-slate-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <!-- Headline -->
+    <h2 class="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 reveal">
+      {headline}
+    </h2>
+
+    <!-- Subheadline -->
+    {subheadline && (
+      <p class="text-lg lg:text-xl text-slate-600 mb-10 max-w-2xl mx-auto reveal" style="transition-delay: 100ms;">
+        {subheadline}
+      </p>
+    )}
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12 reveal" style="transition-delay: 200ms;">
+      <a
+        href={primaryCta.href}
+        class="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-semibold text-white primary-gradient hover:scale-105 hover:shadow-xl transition-all duration-200"
+      >
+        {primaryCta.label}
+        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+      </a>
+      <a
+        href={secondaryCta.href}
+        class="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-semibold text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all duration-200"
+      >
+        {secondaryCta.label}
+      </a>
+    </div>
+
+    <!-- Trust Stat -->
+    <div class="inline-flex items-center gap-3 px-6 py-3 bg-slate-100 rounded-full reveal" style="transition-delay: 300ms;">
+      <span class="material-symbols-outlined text-secondary">verified</span>
+      <p class="text-slate-700">
+        <span class="font-bold text-primary">{trustStat.value}</span> {trustStat.label}
+      </p>
+    </div>
+  </div>
+</section>

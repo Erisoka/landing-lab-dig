@@ -1,0 +1,48 @@
+---
+interface ProcessStep {
+  number: number;
+  title: string;
+  description: string;
+}
+
+interface ProcessProps {
+  heading: string;
+  steps: ProcessStep[];
+}
+
+const { heading, steps } = Astro.props;
+---
+
+<section class="py-16 lg:py-24 bg-slate-50" aria-labelledby="process-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center mb-12 lg:mb-16">
+      <h2 id="process-heading" class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4 reveal">{heading}</h2>
+    </div>
+
+    <!-- Steps -->
+    <div class="relative">
+      <!-- Connector Line (Desktop) -->
+      <div class="hidden lg:block absolute top-6 left-0 right-0 h-0.5 bg-slate-200 -z-10"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-6">
+        {steps.map((step, index) => (
+          <div class="relative reveal" style={`transition-delay: ${index * 150}ms;`}>
+            <!-- Step Circle -->
+            <div class="flex lg:block justify-center mb-4 lg:mb-6">
+              <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                {step.number}
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="text-center lg:text-left">
+              <h3 class="text-lg font-semibold text-slate-900 mb-2">{step.title}</h3>
+              <p class="text-slate-600 text-sm leading-relaxed">{step.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

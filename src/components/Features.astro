@@ -1,0 +1,72 @@
+---
+interface FeatureCard {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+interface FeaturesProps {
+  heading: string;
+  subheading: string;
+  cards: FeatureCard[];
+}
+
+const { heading, subheading, cards } = Astro.props;
+
+// Icon mapping for Material Symbols
+const iconMap: Record<string, string> = {
+  'clipboard': 'content_paste',
+  'presentation': 'slideshow',
+  'assessment': 'assessment',
+  'book': 'menu_book',
+  'computer': 'computer',
+  'download': 'download',
+  'print': 'print',
+  'school': 'school',
+  'groups': 'groups',
+  'timer': 'timer',
+  'check-circle': 'check_circle',
+  'lightning': 'bolt',
+  'users': 'groups',
+  'calendar': 'calendar_today',
+  'folder': 'folder',
+  'assignment': 'assignment',
+};
+
+function getIconCode(iconName: string): string {
+  return iconMap[iconName] || 'check_circle';
+}
+---
+
+<section class="py-16 lg:py-24 bg-white" id="features" aria-labelledby="features-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center mb-12 lg:mb-16">
+      <h2 id="features-heading" class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4 reveal">{heading}</h2>
+      <p class="text-lg text-slate-600 max-w-2xl mx-auto reveal" style="transition-delay: 100ms;">
+        {subheading}
+      </p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+      {cards.map((card, index) => (
+        <div
+          class="card-lift bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-sm hover:border-primary/20 reveal"
+          style={`transition-delay: ${index * 100}ms;`}
+        >
+          <!-- Icon -->
+          <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
+            <span class="material-symbols-outlined text-primary text-2xl">
+              {getIconCode(card.icon)}
+            </span>
+          </div>
+
+          <!-- Content -->
+          <h3 class="text-xl font-semibold text-slate-900 mb-3">{card.title}</h3>
+          <p class="text-slate-600 leading-relaxed">{card.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

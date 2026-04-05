@@ -1,0 +1,283 @@
+---
+interface NavLink {
+  label: string;
+  href: string;
+}
+
+interface NavbarProps {
+  logo: string;
+  links: NavLink[];
+  ctaButton: { label: string; href: string };
+}
+
+const { logo, links, ctaButton } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav
+  class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-xl backdrop-safari support-[backdrop-filter]:bg-white/60"
+  role="navigation"
+  aria-label="Navegación principal"
+  id="navbar"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+      <!-- Logo -->
+      <a href="/" class="flex items-center text-xl font-bold text-primary">
+        {logo}
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:flex items-center gap-8">
+        {links.map((link) => (
+          <a
+            href={link.href}
+            class="nav-link text-sm font-medium transition-colors duration-200 text-slate-600 hover:text-primary"
+            data-target={link.href.replace('/', '')}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      <!-- CTA Button (Desktop) -->
+      <div class="hidden lg:block">
+        <a
+          href={ctaButton.href}
+          class="inline-flex items-center px-5 py-2.5 rounded-lg text-sm font-semibold text-white primary-gradient hover:scale-105 hover:shadow-lg transition-all duration-200"
+        >
+          {ctaButton.label}
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        type="button"
+        class="lg:hidden p-2 rounded-lg text-slate-600 hover:text-primary hover:bg-slate-100 transition-colors"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        id="mobile-menu-btn"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div
+    class="mobile-menu fixed inset-0 bg-white/95 backdrop-blur-xl lg:hidden opacity-0 invisible transition-all duration-300 ease-out"
+    id="mobile-menu"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Menú de navegación"
+  >
+    <div class="flex flex-col h-full pt-20 px-6 pb-6">
+      <!-- Close Button -->
+      <button
+        type="button"
+        class="absolute top-4 right-4 p-2 rounded-lg text-slate-600 hover:text-primary hover:bg-slate-100 transition-colors"
+        aria-label="Cerrar menú"
+        id="mobile-menu-close"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Mobile Links -->
+      <div class="flex flex-col gap-4" id="mobile-menu-links">
+        {links.map((link) => (
+          <a
+            href={link.href}
+            class="nav-link mobile text-lg font-medium py-3 border-b border-slate-100 transition-colors duration-200 text-slate-600 hover:text-primary"
+            data-target={link.href.replace('/', '')}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      <!-- CTA Button (Mobile) -->
+      <div class="mt-8">
+        <a
+          href={ctaButton.href}
+          class="block w-full text-center px-5 py-3 rounded-lg text-sm font-semibold text-white primary-gradient hover:scale-105 hover:shadow-lg transition-all duration-200"
+        >
+          {ctaButton.label}
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuLinks = document.getElementById('mobile-menu-links');
+
+  let isMenuOpen = false;
+
+  function openMenu() {
+    isMenuOpen = true;
+    mobileMenu?.classList.remove('opacity-0', 'invisible');
+    mobileMenu?.classList.add('opacity-100', 'visible', 'is-open');
+    mobileMenuBtn?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    trapFocus(mobileMenu);
+  }
+
+  function closeMenu() {
+    isMenuOpen = false;
+    mobileMenu?.classList.add('opacity-0', 'invisible');
+    mobileMenu?.classList.remove('opacity-100', 'visible', 'is-open');
+    mobileMenuBtn?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    mobileMenuBtn?.focus();
+  }
+
+  function trapFocus(element: HTMLElement | null) {
+    if (!element) return;
+    const focusableElements = element.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    element.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMenu();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement?.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement?.focus();
+        }
+      }
+    });
+  }
+
+  mobileMenuBtn?.addEventListener('click', openMenu);
+  mobileMenuClose?.addEventListener('click', closeMenu);
+
+  // Close on link click
+  mobileMenuLinks?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Close on outside click
+  mobileMenu?.addEventListener('click', (e) => {
+    if (e.target === mobileMenu) closeMenu();
+  });
+
+  // Scrolled state
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) {
+      navbar?.classList.add('shadow-md');
+    } else {
+      navbar?.classList.remove('shadow-md');
+    }
+  });
+
+  // Active navigation link tracking via IntersectionObserver
+  const navLinks = document.querySelectorAll('.nav-link');
+  
+  // Create an array of sections based on the navLinks data-target attributes
+  // Filter out elements that might not exist on the page (like a pure '/')
+  const sectionIds = Array.from(navLinks)
+    .map(link => link.getAttribute('data-target'))
+    .filter(id => id && id.startsWith('#'))
+    .map(id => id.replace('#', ''));
+    
+  // If we have an 'Inicio' link (like href="/"), handle it specially
+  const hasHomeLink = Array.from(navLinks).some(link => link.getAttribute('href') === '/');
+  
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+  if (sections.length > 0) {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px', // Trigger when section is in the middle of the screen
+      threshold: 0
+    };
+
+    let currentActiveId = '';
+
+    const observer = new IntersectionObserver((entries) => {
+      // Find the most visible section
+      let mostVisibleSection = entries[0];
+      
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          mostVisibleSection = entry;
+        }
+      });
+
+      if (mostVisibleSection && mostVisibleSection.isIntersecting) {
+        currentActiveId = mostVisibleSection.target.id;
+        
+        // Remove active state from all
+        navLinks.forEach(link => {
+          link.classList.remove('text-primary', 'underline', 'underline-offset-4');
+          link.classList.add('text-slate-600');
+        });
+
+        // Add active state to the current one
+        const activeLinks = document.querySelectorAll(`.nav-link[data-target="#${currentActiveId}"]`);
+        activeLinks.forEach(link => {
+          link.classList.remove('text-slate-600');
+          if (link.classList.contains('mobile')) {
+             link.classList.add('text-primary');
+          } else {
+             link.classList.add('text-primary', 'underline', 'underline-offset-4');
+          }
+        });
+      } else if (window.scrollY < 100 && hasHomeLink) {
+         // Special case for scrolling all the way to top: activate the Home ("Inicio") link
+         navLinks.forEach(link => {
+          link.classList.remove('text-primary', 'underline', 'underline-offset-4');
+          link.classList.add('text-slate-600');
+        });
+        
+        const homeLinks = document.querySelectorAll(`.nav-link[href="/"]`);
+        homeLinks.forEach(link => {
+          link.classList.remove('text-slate-600');
+          if (link.classList.contains('mobile')) {
+             link.classList.add('text-primary');
+          } else {
+             link.classList.add('text-primary', 'underline', 'underline-offset-4');
+          }
+        });
+      }
+    }, observerOptions);
+
+    sections.forEach(section => {
+      if(section) observer.observe(section);
+    });
+    
+    // Initial check for scroll position on page load
+    setTimeout(() => {
+        if (window.scrollY < 100 && hasHomeLink) {
+            const homeLinks = document.querySelectorAll(`.nav-link[href="/"]`);
+            homeLinks.forEach(link => {
+                link.classList.remove('text-slate-600');
+                if (link.classList.contains('mobile')) {
+                    link.classList.add('text-primary');
+                } else {
+                    link.classList.add('text-primary', 'underline', 'underline-offset-4');
+                }
+            });
+        }
+    }, 100);
+  }
+</script>

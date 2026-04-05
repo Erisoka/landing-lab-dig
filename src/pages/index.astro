@@ -1,0 +1,276 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import TrustBar from '../components/TrustBar.astro';
+import Features from '../components/Features.astro';
+import Process from '../components/Process.astro';
+import ClassPreview from '../components/ClassPreview.astro';
+import Grades from '../components/Grades.astro';
+import MakerLab from '../components/MakerLab.astro';
+import ClassContent from '../components/ClassContent.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import Footer from '../components/Footer.astro';
+
+import heroMockupImg from '../assets/images/hero-mockup.png';
+import makerLabImg from '../assets/images/maker-lab-image.png';
+import logoSanIgnacio from '../assets/images/logo-san-ignacio.png';
+import logoAmericano from '../assets/images/logo-americano.png';
+import logoInstitutoNacional from '../assets/images/logo-instituto-nacional.png';
+import logoRochester from '../assets/images/logo-rochester.png';
+import logoGimnasioModerno from '../assets/images/logo-gimnasio-moderno.png';
+
+// Navbar data
+const navbarProps = {
+  logo: "Laboratorio Digital",
+  links: [
+    { label: "Inicio", href: "/" },
+    { label: "Características", href: "#features" },
+    { label: "Grados", href: "#grades" },
+    { label: "Contenido", href: "#content" },
+    { label: "MakerLab", href: "#makerlab" },
+    { label: "Contacto", href: "#contact" },
+  ],
+  ctaButton: { label: "Iniciar", href: "/" }
+};
+
+// Hero data
+const heroProps = {
+  headline: "Clases de tecnología listas para enseñar",
+  subheadline: "Plataforma completa con guías, guion de clase y diapositivas para docentes de tecnología e informática en colegios.",
+  primaryCta: { label: "Explorar una clase real", href: "#class-preview" },
+  secondaryCta: { label: "Ver demo en video", href: "#class-preview" },
+  mockupImage: heroMockupImg,
+  mockupAlt: "Vista previa del dashboard de Laboratorio Digital con interfaz de clase interactiva"
+};
+
+// TrustBar data
+const trustBarProps = {
+  stats: [
+    { value: "+500", label: "instituciones educativas" },
+    { value: "+15,000", label: "clases impartidas" },
+    { value: "98%", label: "satisfacción docente" }
+  ],
+  institutions: [
+    { name: "Colegio San Ignacio", logoUrl: logoSanIgnacio },
+    { name: "Colegio Americano", logoUrl: logoAmericano },
+    { name: "Instituto Nacional", logoUrl: logoInstitutoNacional },
+    { name: "Colegio Rochester", logoUrl: logoRochester },
+    { name: "Gimnasio Moderno", logoUrl: logoGimnasioModerno },
+  ]
+};
+
+// Features data
+const featuresProps = {
+  heading: "Todo lo que necesitas para enseñar",
+  subheading: "Recursos pedagógicos diseñados para hacer tu clase más dinámica y efectiva.",
+  cards: [
+    {
+      icon: "clipboard",
+      title: "Clases listas",
+      description: "Guion completo con actividades, objetivos y timings para cada sesión."
+    },
+    {
+      icon: "print",
+      title: "Guías imprimibles",
+      description: "Material para estudiantes listo para imprimir y usar en clase."
+    },
+    {
+      icon: "presentation",
+      title: "Presentaciones",
+      description: "Diapositivas profesionales para proyectar y explicar conceptos."
+    },
+    {
+      icon: "assessment",
+      title: "Evaluación",
+      description: "Rúbricas y quizzes integrados para evaluar el aprendizaje."
+    }
+  ]
+};
+
+// Process data
+const processProps = {
+  heading: "Así funciona",
+  steps: [
+    {
+      number: 1,
+      title: "Elige tu grado",
+      description: "Selecciona el nivel educativo que necesitas enseñar."
+    },
+    {
+      number: 2,
+      title: "Descarga los materiales",
+      description: "Accede a guías, presentaciones y recursos en segundos."
+    },
+    {
+      number: 3,
+      title: "Proyecta y enseña",
+      description: "Usa las diapositivas para explicar y guiar la clase."
+    },
+    {
+      number: 4,
+      title: "Evalúa y mejora",
+      description: "Utiliza las rúbricas para evaluar el desempeño estudiantil."
+    }
+  ]
+};
+
+// ClassPreview data
+const classPreviewProps = {
+  title: "Introducción a la Programación Visual con Scratch",
+  grade: "Grado 6",
+  duration: "90 minutos",
+  activities: [
+    "Crear un personaje que se mueva con las flechas del teclado",
+    "Agregar un segundo personaje y programar su interacción",
+    "Crear un fondo animado con efectos de sonido",
+    "Presentar el proyecto final a la clase"
+  ],
+  materials: [
+    { name: "Computadores con Scratch", icon: "laptop" },
+    { name: "Proyector", icon: "video" },
+    { name: "Guía del estudiante (PDF)", icon: "document" },
+    { name: "Rúbrica de evaluación", icon: "assessment" }
+  ],
+  primaryCta: { label: "Ver guía completa", href: "#content" },
+  secondaryCta: { label: "Descargar materiales", href: "#content" }
+};
+
+// Grades data
+const gradesProps = {
+  heading: "Contenido por grado",
+  subheading: "Desde básica primaria hasta secundaria, cubrimos todos los niveles.",
+  grades: [
+    { level: 6, label: "Básica Secundaria", progress: 100, badge: "Popular", classCount: 24, ctaLabel: "Explorar clases", ctaHref: "/" },
+    { level: 7, label: "Básica Secundaria", progress: 85, badge: null, classCount: 20, ctaLabel: "Explorar clases", ctaHref: "/" },
+    { level: 8, label: "Básica Secundaria", progress: 70, badge: null, classCount: 16, ctaLabel: "Explorar clases", ctaHref: "/" },
+    { level: 9, label: "Media Técnica", progress: 45, badge: "Nuevo", classCount: 10, ctaLabel: "Explorar clases", ctaHref: "/" },
+    { level: 10, label: "Media Técnica", progress: 30, badge: null, classCount: 8, ctaLabel: "Explorar clases", ctaHref: "/" },
+    { level: 11, label: "Media Técnica", progress: 15, badge: "Próximamente", classCount: 4, ctaLabel: "Explorar clases", ctaHref: "/" }
+  ]
+};
+
+// MakerLab data
+const makerLabProps = {
+  heading: "MakerLab: Aprende haciendo",
+  subheading: "Proyectos prácticos de Robótica, Electrónica y Fabricación Digital para complementar tus clases.",
+  image: makerLabImg,
+  imageAlt: "Estudiantes trabajando en proyectos de robótica en MakerLab",
+  features: [
+    { icon: "check", text: "Proyectos con Arduino, micro:bit y Raspberry Pi" },
+    { icon: "check", text: "Guías paso a paso con código listo para usar" },
+    { icon: "check", text: "Actividades para Maker Faire y ferias de ciencias" },
+    { icon: "check", text: "Soporte técnico por chat y correo electrónico" }
+  ],
+  cta: { label: "Conocer MakerLab", href: "#contact" }
+};
+
+// ClassContent data
+const classContentProps = {
+  heading: "Tres formatos, una clase",
+  columns: [
+    {
+      type: "guion",
+      title: "Guion de Clase",
+      description: "Plan detallado con objetivos, actividades, tiempos y preguntas guía.",
+      previewText: "\"El docente preguntará: ¿Por qué es importante aprender a programar?\"",
+      ctaLabel: "Ver ejemplo de guion",
+      ctaHref: "/"
+    },
+    {
+      type: "guia",
+      title: "Guía Docente",
+      description: "Material de apoyo con metodología, tips y recursos adicionales.",
+      previewText: "\"Tip: Use ejemplos de la vida cotidiana para explicar conceptos.\"",
+      ctaLabel: "Ver ejemplo de guía",
+      ctaHref: "/"
+    },
+    {
+      type: "diapositiva",
+      title: "Diapositivas",
+      description: "Presentación lista para proyectar con explicaciones visuales.",
+      previewText: "\"Diagrama de flujo del proceso de pensamiento computacional.\"",
+      ctaLabel: "Ver ejemplo de diapositivas",
+      ctaHref: "/"
+    }
+  ]
+};
+
+// FinalCTA data
+const finalCTAProps = {
+  headline: "Empieza a enseñar tecnología hoy",
+  subheadline: "Únete a más de 500 instituciones que ya están transformando sus clases.",
+  primaryCta: { label: "Registrarse gratis", href: "#contact" },
+  secondaryCta: { label: "Agendar demo", href: "#contact" },
+  trustStat: { value: "+500", label: "docentes activos" }
+};
+
+// Footer data
+const footerProps = {
+  logo: "Laboratorio Digital",
+  linkColumns: [
+    {
+      heading: "Productos",
+      links: [
+        { label: "Clases", href: "/" },
+        { label: "MakerLab", href: "/" },
+        { label: "Evaluación", href: "/" },
+        { label: "Proyectos", href: "/" }
+      ]
+    },
+    {
+      heading: "Recursos",
+      links: [
+        { label: "Blog", href: "/" },
+        { label: "Tutoriales", href: "/" },
+        { label: "Webinars", href: "/" },
+        { label: "Documentación", href: "/" }
+      ]
+    },
+    {
+      heading: "Compañía",
+      links: [
+        { label: "Sobre nosotros", href: "/" },
+        { label: "Contacto", href: "/" },
+        { label: "Trabaja con nosotros", href: "/" },
+        { label: "Prensa", href: "/" }
+      ]
+    },
+    {
+      heading: "Legal",
+      links: [
+        { label: "Términos de uso", href: "/" },
+        { label: "Política de privacidad", href: "/" },
+        { label: "Licencias", href: "/" }
+      ]
+    }
+  ],
+  socialLinks: [
+    { platform: "twitter", url: "https://twitter.com/labodigital", ariaLabel: "Síguenos en Twitter" },
+    { platform: "linkedin", url: "https://linkedin.com/company/laboratorio-digital", ariaLabel: "Síguenos en LinkedIn" },
+    { platform: "youtube", url: "https://youtube.com/@labodigital", ariaLabel: "Suscríbete a nuestro canal de YouTube" }
+  ],
+  copyright: "© 2026 Laboratorio Digital"
+};
+---
+
+<Layout
+  title="Laboratorio Digital – Tecnología e Informática"
+  description="Plataforma de clases de tecnología e informática para colegios. Guías, guion de clase y diapositivas listas para usar."
+>
+  <Navbar {...navbarProps} />
+
+  <main id="main-content">
+    <Hero {...heroProps} />
+    <TrustBar {...trustBarProps} />
+    <Features {...featuresProps} />
+    <Process {...processProps} />
+    <ClassPreview {...classPreviewProps} />
+    <Grades {...gradesProps} />
+    <MakerLab {...makerLabProps} />
+    <ClassContent {...classContentProps} />
+    <FinalCTA {...finalCTAProps} />
+  </main>
+
+  <Footer {...footerProps} />
+</Layout>

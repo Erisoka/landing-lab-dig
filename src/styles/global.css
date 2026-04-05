@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1E3A8A;
+  --color-secondary: #10B981;
+  --color-accent: #F59E0B;
+  --font-headline: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+@layer base {
+  :root {
+    --color-primary: #1E3A8A;
+    --color-secondary: #10B981;
+    --color-accent: #F59E0B;
+    --color-surface: #f8fafc;
+    --color-on-surface: #0f172a;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+  }
+}
+
+@layer components {
+  .primary-gradient {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #1e40af 100%);
+  }
+
+  .hero-bg {
+    background: radial-gradient(circle at top right, rgba(30, 58, 138, 0.05), transparent),
+                 radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.03), transparent);
+  }
+}
+
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .card-lift {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  }
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  padding: 12px 24px;
+  background: var(--color-primary);
+  color: white;
+  z-index: 1000;
+  transition: top 0.2s ease;
+  border-radius: 0.5rem;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
